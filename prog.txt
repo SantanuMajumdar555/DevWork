@@ -1,0 +1,129 @@
+
+/* The Grid Search by PRASHANTB1984: https://www.hackerrank.com/challenges/the-grid-search */
+//Diff: medium
+// URL: https://www.hackerrank.com/challenges/the-grid-search?h_r=internal-search
+//Language Used : Java 8
+//Repository Name: SantanuMajumdar555/King
+//Solution:
+
+import java.util.Scanner; 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.awt.Point;
+
+public class TheGridSearch  // be me haha Santanu Majumdar // Jump here to inrMat 2nd 
+{
+	private static int[][] inrMatrix(int[][] mat, int strtR, int endR, int strtC, int endC){ // Jump here to inrMat 2nd 
+
+		int[][] sub = new int[endR - strtR][endC - strtC]; // Size of inner Mat defined 
+		
+		for (int subI = 0, matI = strtR; matI < endR; ++subI, ++matI){ // Refining the matrix
+
+			for (int subJ = 0, matJ = strtC; matJ < endC; ++subJ, ++matJ){
+
+				int tmp = mat[matI][matJ]; // Providing values to inner Mat
+				sub[subI][subJ] = tmp; 
+			}
+		}
+		
+		return sub; // InnerMat val retrn  
+	}
+
+	private static void containPatrn(int[][] grid, int[][] patrn, int r, int c){ // Jump here 1st
+
+		String  containPatrn = "NO"; // Initialising to false (check if does not work)
+		int[][] tmp	= new int[r][c];
+		
+		loop:
+			for (int i = 0; i + r < grid.length; ++i){
+
+				for (int j = 0; j + c< grid[i].length; ++j){
+
+					tmp = inrMatrix(grid, i, i + r, j, j + c); // Jump to  inrMat 2nd 
+					if (Arrays.deepEquals(patrn, tmp)) // checking equality for two matrces (From google)
+					{
+						containPatrn = "YES";
+						break loop;
+					}
+				}
+			}
+		
+		System.out.println(containPatrn);
+	}
+	
+	@SuppressWarnings("unused") // stop showing warnings
+	private static void containPatrn1(int[][] grid, int[][] patrn, int r, int c)
+	{
+		String  containPatrn = "NO";
+		HashMap<Integer, ArrayList<Point>> hash = new HashMap<Integer, ArrayList<Point>>(); // Use Key for determining
+		
+		for (int i = 0; i < grid.length; ++i){
+
+			for (int j = 0; j < grid[i].length; ++j){
+
+				int key = grid[i][j];   // take key and check
+				if (!hash.containsKey(key))
+				{   
+                   			 // Check how to giv val of key to i,j
+					hash.put(key, new ArrayList<Point>(Arrays.asList(new Point(i, j)))); // map the specified key to the specified value in this hashtable. (Googled)
+				}
+				else
+				{
+					ArrayList<Point> ls = hash.get(key); 
+					ls.add(new Point(i, j));
+					hash.put(key, ls);
+				}
+			}
+		}
+		  // Dont forget to print out pattrn (aftr completing)
+		System.out.println(containPatrn);
+	}
+	
+	public static void main(String[] args)
+	{
+		int C, c, i, j, t, R, r;
+		String  row;
+		int[][] grid, patrn;
+		Scanner scan = new Scanner(System.in);
+		
+		t = scan.nextInt(); // Taking frst line (num of test cases) 
+		
+		while (t > 0){ // test maadi
+
+			R  = scan.nextInt(); // take row 
+			C  = scan.nextInt(); // take col
+			grid = new int[R][C]; // declaring full grid (check again if error comes) 
+			
+			for (i = 0; i < R; ++i){ // Forming the overall grid
+
+				row = scan.next();
+				for (j = 0; j < C; ++j){
+
+					grid[i][j] = Character.getNumericValue(row.charAt(j));	// retrn int value for j to grid i frm loop
+				}
+			}
+			
+			r    = scan.nextInt(); // Taking row nd col frm syst
+			c    = scan.nextInt();
+			patrn = new int[r][c];
+			
+			for (i = 0; i < r; ++i){ // headache taking pattern for inside grid
+
+				row = scan.next();
+				for (j = 0; j < c; ++j)
+				{
+					patrn[i][j] = Character.getNumericValue(row.charAt(j));
+				}
+			}
+
+			containPatrn(grid, patrn, r, c); // throw function
+			--t; // tst csse redctn in val of t
+		}
+		
+		scan.close(); // normally in J7  (check for Error if J8 throws any (use Exception if necessary))
+	}
+}
+
+
+
